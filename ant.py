@@ -11,7 +11,8 @@ except pymongo.errors.ServerSelectionTimeoutError as err:
     print('failed!')
     print(err)
 
-def insertPost(blogName, userName, title, postBody, tags, timestamp):
+
+def insertPost(db, blogName, userName, title, postBody, tags):
     collection = db.Blogs
     permalink  = blogName+'.'+ re.sub('[^0-9a-zA-Z]+', '_', title)
     present = collection.find_one({"permalink": permalink})
