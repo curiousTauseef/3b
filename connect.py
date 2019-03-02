@@ -5,7 +5,6 @@ db = None
 try:
     client = pymongo.MongoClient(server)
     db = client.Team08DB
-    print('connected!')
 
 except pymongo.errors.ServerSelectionTimeoutError as err:
     print('failed!')
@@ -14,6 +13,12 @@ except pymongo.errors.ServerSelectionTimeoutError as err:
 records = db.test.find()
 for i in records:
     print(i)
+
+
+
+
+
+
 
 '''
 if db:
