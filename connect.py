@@ -1,21 +1,25 @@
 import pymongo
 
-server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
-db = None
-try:
-    client = pymongo.MongoClient(server)
-    db = client.Team08DB
+def connect():
+    server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
+    db = None
+    try:
+        client = pymongo.MongoClient(server)
+        db = client.Team08DB
+        return db
 
-except pymongo.errors.ServerSelectionTimeoutError as err:
-    print('failed!')
-    print(err)
+    except pymongo.errors.ServerSelectionTimeoutError as err:
+        print('failed!')
+        print(err)
+        return False
 
-records = db.test.find()
-for i in records:
-    print(i)
+    # records = db.test.find()
+    # for i in records:
+    #     print(i)
 
 
-
+if __name__ == "__main__":
+    connect()
 
 
 

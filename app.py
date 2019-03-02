@@ -1,19 +1,20 @@
 import sys
-#from connect import connect
+from connect import connect
+from ant import insertPost
 
 def app():
     """
     Main driver for CLI
     """
-    # conn = connect()
-    #
-    # if conn:
-    #     print("Welcome to the blog engine CLI")
-    #     print("Please type a valid command to begin!")
-    #
-    # else:
-    #     print("Sorry, connection to database refused")
-    #     return None
+    db = connect()
+
+    if db:
+        print("Welcome to the blog engine CLI")
+        print("Please type a valid command to begin!")
+
+    else:
+        print("Sorry, connection to database refused")
+        return None
 
     for line in sys.stdin:
         tokens = parseCommand(line)
@@ -61,16 +62,7 @@ def app():
                 print("Error: timestamp must be a string")
                 break
 
-            post = {
-                "blogName": blogName,
-                "userName": userName,
-                "title": title,
-                "postBody": postBody,
-                "tags": tags,
-                "timestamp": timestamp
-            }
-
-            print(post)
+            insertPost(db, blogName, userName, title, postBody, tags)
 
         # COMMENT --------------------------------------------------------------
         elif tokens[0] == "comment":
