@@ -1,4 +1,3 @@
-import datetime
 import re
 import pymongo
 
@@ -12,32 +11,45 @@ except pymongo.errors.ServerSelectionTimeoutError as err:
     print('failed!')
     print(err)
 
-records = db.test.find()
-for i in records:
-    print(i)
-
-
-
-def insertPost(blogName, userName, title, postBody, tags):
+def insertPost(blogName, userName, title, postBody, tags, timestamp):
     collection = db.Blogs
     permalink  = blogName+'.'+ re.sub('[^0-9a-zA-Z]+', '_', title)
     present = collection.find_one({"permalink": permalink})
     if not present:
-        timestamp = datetime.datetime.utcnow()
         collection.insert_one({
-                "blogName" : blogName,
-                "userName" : userName,
-                "title" : title,
-                "postBody" : postBody,
-                "tags" : tags,
-                "timestamp": timestamp,
-                "permalink" : permalink
-            })
+            "blogName" : blogName,
+            "userName" : userName,
+            "title" : title,
+            "postBody" : postBody,
+            "tags" : tags,
+            "timestamp": timestamp,
+            "permalink" : permalink
+        })
+        print("Post inserted with permalink: " + permalink)
     else:
-        print("Document with permalink: " + permalink + " already in DB.")
+        print("Document with permalink: " + permalink + " is already in DB.")
 
+def insertComment(blogName, permalink, userName, commentBody, timestamp):
+    collection = db.Blogs
+    present = collection.find_one({"permalink": permalink})
+    if  present:
+        collection.update_one({
+            "permalink": permalink
+              },{
+            "$push": {
+                "comment" : {
+                    "commentBody" : commentBody,
+                    "userName" : userName,
+                    "timestamp": timestamp,
+                    "permalink": timestamp
+                    }}})
+        print("Comment inserted with permalink: " + timestamp)
+    else:
+        print("No post in DB with permalink: " + permalink)
+        
 
-insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [])
+#insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
+insertComment("Time", "BensBlog._first_blog_", "userrrr", "bfhfhfhfhfhfhodyy","BBBBBB")
 
 
 
