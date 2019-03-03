@@ -34,7 +34,7 @@ def insertComment(blogName, permalink, userName, commentBody, timestamp):
     blogCollection = db.Blogs
     commentCollection = db.Comments
     blogPresent = blogCollection.find_one({"permalink": permalink})
-    commentPresent = commentCollection.find_one({"permalink": timestamp})
+    commentPresent = commentCollection.find_one({"permalink": permalink})
     if blogPresent:
         blogCollection.update_one({
             "permalink": permalink
@@ -68,7 +68,7 @@ def insertComment(blogName, permalink, userName, commentBody, timestamp):
                     }}})
         print("Comment inserted with permalink: " + timestamp)
     else:
-        print("No post or comment exists with permalink: " + timestamp)
+        print("No post or comment exists with permalink: " + permalink)
 
 def delete(blogName, permalink, userName, timestamp):
     blogCollection = db.Blogs
