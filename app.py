@@ -17,7 +17,8 @@ def app():
         return None
 
     for line in sys.stdin:
-        tokens = parseCommand(line)
+        tokens = parseCommand(line.rstrip())
+        print(tokens)
 
         # POST -----------------------------------------------------------------
         if tokens[0] == "post":
@@ -92,6 +93,8 @@ def app():
 
             if isString(tokens[2]):
                 permalink = tokens[2]
+                print(permalink)
+                print(permalink[-1])
             else:
                 print("Error: permalink must be a quoted string")
                 continue
@@ -110,6 +113,7 @@ def app():
 
             if isString(tokens[5]):
                 timestamp = tokens[5]
+                print(timestamp)
             else:
                 print("Error: timestamp must be a string")
                 continue

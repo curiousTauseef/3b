@@ -1,15 +1,15 @@
 import re
 import pymongo
 
-# server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
-# db = None
-# try:
-#     client = pymongo.MongoClient(server)
-#     db = client.Team08DB
-#
-# except pymongo.errors.ServerSelectionTimeoutError as err:
-#     print('failed!')
-#     print(err)
+server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
+db = None
+try:
+    client = pymongo.MongoClient(server)
+    db = client.Team08DB
+
+except pymongo.errors.ServerSelectionTimeoutError as err:
+    print('failed!')
+    print(err)
 
 
 def insertPost(db, blogName, userName, title, postBody, tags, timestamp):
@@ -97,9 +97,9 @@ def delete(blogName, permalink, userName, timestamp):
         print("No post in DB with permalink: " + permalink)
 
 # def show(blogName)
-
+delete("NewBlog", "NewBlog._new_post_", "joe", "2018-10-03T05:41:11.842Z")
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
-#insertComment("Time", "BBrgrgrgrgrgr", "userrrr", "ThNNGNGNGNG GNG GNG ","swegggrgrt")
+#insertComment(db, "userrrr", "2018-10-02T11:01:28.425Z ", "ThNNGNGNGNG GNG GNG ","swegggrgrt", "timestamp")
 
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
 # insertComment("Time", "BensBlog._first_blog_", "userrrr", "bfhfhfhfhfhfhodyy","BBBBBB")
