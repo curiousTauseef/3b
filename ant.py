@@ -40,18 +40,16 @@ def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
             "permalink": permalink
               },{
             "$push": {
-                "comment" : {
-                    "commentBody" : commentBody,
-                    "userName" : userName,
-                    "timestamp": timestamp,
-                    "permalink": timestamp
+                "comments" : {
+                    "permalink" : timestamp,
                     }}})
         commentCollection.insert_one({
             "commentBody" : commentBody,
             "userName" : userName,
             "timestamp": timestamp,
             "permalink": timestamp,
-            "blogName": blogName
+            "blogName": blogName,
+            "parent": permalink
         })
         print("Comment inserted with permalink: " + timestamp)
     elif commentPresent:
