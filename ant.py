@@ -89,28 +89,34 @@ def delete(db, blogName, permalink, userName, timestamp):
         print("No post in DB with permalink: " + permalink)
 
 def show(db, blogName):
-    blog = db.Blogs.find_one({"blogName": blogName})
-    if not blog:
+    blogs = db.Blogs.find({"blogName": blogName})
+
+    if not blogs:
         print("Error: no blog with name " + blogName)
         return
 
-    printBlogInfo(blog)
-    print("\n")
     toVisit = []
 
-    if ("comments" in blog):
-        for item in blog["comments"]:
-            toVisit.append(item["permalink"])
+    for blog in blogs:
+        toVisit.append(["blog", blog["permalink"]])
 
     while toVisit:
-        currPermalink = toVisit.pop()
-        currComment = db.Comments.find_one({"permalink": currPermalink})
-        if currComment:
-            printCommentInfo(currComment)
-            print("\n")
-        if ("comments" in currComment):
-            for item in currComment["comments"]:
-                toVisit.append(item["permalink"])
+        type, permalink = toVisit.pop()
+
+        if type == "blog":
+            blog = db.Blogs.find_one({"permalink": permalink})
+            printBlogInfo(blog)
+            if ("comments" in blog):
+                for comment in blog["comments"]:
+                    toVisit.append(["comment", comment["permalink"]])
+
+        else:
+            comment = db.Comments.find_one({"permalink": permalink})
+            printCommentInfo(comment)
+            if ("comments" in comment):
+                for childComment in comment["comments"]:
+                    toVisit.append(["comment", childComment["permalink"]])
+
 
 
 def printBlogInfo(blog):

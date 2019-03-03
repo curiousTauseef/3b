@@ -116,6 +116,10 @@ def app():
 
             insertComment(db, blogName, permalink, userName, commentBody, timestamp)
 
+        # CLEAR ----------------------------------------------------------------
+        elif tokens[0] == "_clear":
+            db.drop_collection("Blogs")
+            db.drop_collection("Comments")
 
         # DELETE ---------------------------------------------------------------
         elif tokens[0] == "delete":
