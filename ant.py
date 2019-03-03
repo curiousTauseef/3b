@@ -31,10 +31,12 @@ def insertPost(db, blogName, userName, title, postBody, tags, timestamp):
         print("Document with permalink: " + permalink + " is already in DB.")
 
 def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
-    collection = db.Blogs
-    present = collection.find_one({"permalink": permalink})
-    if  present:
-        collection.update_one({
+    blogCollection = db.Blogs
+    commentCollection = db.Comments
+    blogPresent = blogCollection.find_one({"permalink": permalink})
+    commentPresent = commentCollection.find_one({"permalink": permalink})
+    if blogPresent:
+        blogCollection.update_one({
             "permalink": permalink
               },{
             "$push": {
@@ -44,7 +46,53 @@ def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
                     "timestamp": timestamp,
                     "permalink": timestamp
                     }}})
+        commentCollection.insert_one({
+            "commentBody" : commentBody,
+            "userName" : userName,
+            "timestamp": timestamp,
+            "permalink": timestamp,
+            "blogName": blogName
+        })
         print("Comment inserted with permalink: " + timestamp)
+    elif commentPresent:
+        commentCollection.update_one({
+            "permalink": permalink
+              },{
+            "$push": {
+                "comment" : {
+                    "commentBody" : commentBody,
+                    "userName" : userName,
+                    "timestamp": timestamp,
+                    "permalink": timestamp,
+                    "blogName": blogName
+                    }}})
+        print("Comment inserted with permalink: " + timestamp)
+    else:
+        print("No post or comment exists with permalink: " + timestamp)
+
+def delete(blogName, permalink, userName, timestamp):
+    blogCollection = db.Blogs
+    commentCollection = db.Comments
+    blogPresent = blogCollection.find_one({"permalink": permalink})
+    commentPresent = commentCollection.find_one({"permalink": permalink})
+    if blogPresent:
+        blogCollection.find_one_and_replace({
+                "permalink" : permalink
+            },{
+                "body" : "Deleted by " + userName,
+                "timestamp" : timestamp,
+                "userName" : userName
+                })
+        print("Deleted post with permalink: " + permalink)
+    elif commentPresent:
+        commentCollection.find_one_and_replace({
+                "permalink" : permalink
+            },{
+                "body" : "Deleted by " + userName,
+                "timestamp" : timestamp,
+                "userName" : userName
+                })
+        print("Deleted comment with permalink: " + permalink)
     else:
         print("No post in DB with permalink: " + permalink)
 
