@@ -122,13 +122,12 @@ def find(db, blogName, searchString):
         printBlogInfo(blog)
     elif searchString in blog["tags"]:
         printBlogInfo(blog)
-    else:
-        if ("comments" in blog):
-            for item in blog["comments"]:
-                currComment = db.Comments.find_one({"permalink": item["permalink"]})
-                if currComment["commentBody"].find(searchString) != -1:
-                    print("found in commentttt")
-
+        
+    if ("comments" in blog):
+        for item in blog["comments"]:
+            currComment = db.Comments.find_one({"permalink": item["permalink"]})
+            if currComment["commentBody"].find(searchString) != -1:
+                printCommentInfo(currComment)
 
 def printBlogInfo(blog):
     print("----------------------------")
