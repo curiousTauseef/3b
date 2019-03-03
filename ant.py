@@ -12,7 +12,7 @@ except pymongo.errors.ServerSelectionTimeoutError as err:
     print(err)
 
 
-def insertPost(db, blogName, userName, title, postBody, tags):
+def insertPost(db, blogName, userName, title, postBody, tags, timestamp):
     collection = db.Blogs
     permalink  = blogName+'.'+ re.sub('[^0-9a-zA-Z]+', '_', title)
     present = collection.find_one({"permalink": permalink})
@@ -30,7 +30,7 @@ def insertPost(db, blogName, userName, title, postBody, tags):
     else:
         print("Document with permalink: " + permalink + " is already in DB.")
 
-def insertComment(blogName, permalink, userName, commentBody, timestamp):
+def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
     blogCollection = db.Blogs
     commentCollection = db.Comments
     blogPresent = blogCollection.find_one({"permalink": permalink})
@@ -94,14 +94,15 @@ def delete(blogName, permalink, userName, timestamp):
                 })
         print("Deleted comment with permalink: " + permalink)
     else:
-        print("No post or comment exists with permalink: " + permalink)
+        print("No post in DB with permalink: " + permalink)
 
-def show(blogName)
+# def show(blogName)
+delete("NewBlog", "NewBlog._new_post_", "joe", "2018-10-03T05:41:11.842Z")
+#insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
+#insertComment(db, "userrrr", "2018-10-02T11:01:28.425Z ", "ThNNGNGNGNG GNG GNG ","swegggrgrt", "timestamp")
 
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
-#insertComment("Time", "BBrgrgrgrgrgr", "userrrr", "ThNNGNGNGNG GNG GNG ","swegggrgrt")
-
-delete("The price of fury", "BBrgrgrgrgrgr", "USERNAMEWHAT!", "Timetamp aho")
+# insertComment("Time", "BensBlog._first_blog_", "userrrr", "bfhfhfhfhfhfhodyy","BBBBBB")
 
 
 
