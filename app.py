@@ -1,6 +1,6 @@
 import sys
 from connect import connect
-from ant import insertPost
+from ant import insertPost, insertComment
 
 def app():
     """
@@ -18,42 +18,49 @@ def app():
 
     for line in sys.stdin:
         tokens = parseCommand(line)
-        print(tokens)
 
         # POST -----------------------------------------------------------------
         if tokens[0] == "post":
-            print("posting!")
             blogName = None
             userName = None
             title = None
             postBody = None
             tags = None
 
+            if len(tokens) != 6 and len(tokens) != 7:
+                print("Usage: post blogName userName title postBody tags timestamp")
+                continue
+
             # type checking
             if isString(tokens[1]):
                 blogName = tokens[1]
             else:
                 print("Error: blogName must be a string")
-                break
+                continue
+
             if isString(tokens[2]):
                 userName = "\"" + tokens[2] + "\""
             else:
                 print("Error: userName must be a quoted string")
-                break
+                continue
+
             if isString(tokens[3]):
                 title = "\"" + tokens[3] + "\""
             else:
                 print("Error: title must be a quoted string")
-                break
+                continue
+
             if isString(tokens[4]):
                 postBody = "\"" + tokens[4] + "\""
             else:
                 print("Error: postBody must be a quoted string")
-                break
+                continue
+
             if len(tokens) == 7 and isString(tokens[5]):
                 tags = "\"" + tokens[5] + "\""
             else:
                 tags = '""'
+
             if len(tokens) == 7 and isString(tokens[6]):
                 timestamp = tokens[6][1: len(tokens[6]) - 1]
             elif len(tokens) == 6 and isString(tokens[5]):
@@ -62,11 +69,54 @@ def app():
                 print("Error: timestamp must be a string")
                 break
 
-            insertPost(db, blogName, userName, title, postBody, tags)
+            insertPost(db, blogName, userName, title, postBody, tags, timestamp)
 
         # COMMENT --------------------------------------------------------------
         elif tokens[0] == "comment":
-            print("commenting!")
+            blogName = None
+            permalink = None
+            userName = None
+            commentBody = None
+            timestamp = None
+
+            if len(tokens) != 6:
+                print("Usage: comment blogName permalink userName commentBody timestamp")
+                continue
+
+            # type checking
+            if isString(tokens[1]):
+                blogName = tokens[1]
+            else:
+                print("Error: blogName must be a string")
+                continue
+
+            if isString(tokens[2]):
+                permalink = tokens[2]
+            else:
+                print("Error: permalink must be a quoted string")
+                continue
+
+            if isString(tokens[3]):
+                userName = "\"" + tokens[3] + "\""
+            else:
+                print("Error: userName must be a quoted string")
+                continue
+
+            if isString(tokens[4]):
+                commentBody = "\"" + tokens[4] + "\""
+            else:
+                print("Error: commentBody must be a quoted string")
+                continue
+
+            if isString(tokens[5]):
+                timestamp = tokens[5]
+            else:
+                print("Error: timestamp must be a string")
+                continue
+
+            insertComment(db, blogName, permalink, userName, commentBody, timestamp)
+
+
 
         # DELETE ---------------------------------------------------------------
         elif tokens[0] == "delete":

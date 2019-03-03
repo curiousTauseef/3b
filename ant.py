@@ -1,18 +1,18 @@
 import re
 import pymongo
 
-server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
-db = None
-try:
-    client = pymongo.MongoClient(server)
-    db = client.Team08DB
+# server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
+# db = None
+# try:
+#     client = pymongo.MongoClient(server)
+#     db = client.Team08DB
+#
+# except pymongo.errors.ServerSelectionTimeoutError as err:
+#     print('failed!')
+#     print(err)
 
-except pymongo.errors.ServerSelectionTimeoutError as err:
-    print('failed!')
-    print(err)
 
-
-def insertPost(db, blogName, userName, title, postBody, tags):
+def insertPost(db, blogName, userName, title, postBody, tags, timestamp):
     collection = db.Blogs
     permalink  = blogName+'.'+ re.sub('[^0-9a-zA-Z]+', '_', title)
     present = collection.find_one({"permalink": permalink})
@@ -30,7 +30,7 @@ def insertPost(db, blogName, userName, title, postBody, tags):
     else:
         print("Document with permalink: " + permalink + " is already in DB.")
 
-def insertComment(blogName, permalink, userName, commentBody, timestamp):
+def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
     collection = db.Blogs
     present = collection.find_one({"permalink": permalink})
     if  present:
@@ -47,10 +47,10 @@ def insertComment(blogName, permalink, userName, commentBody, timestamp):
         print("Comment inserted with permalink: " + timestamp)
     else:
         print("No post in DB with permalink: " + permalink)
-        
+
 
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
-insertComment("Time", "BensBlog._first_blog_", "userrrr", "bfhfhfhfhfhfhodyy","BBBBBB")
+# insertComment("Time", "BensBlog._first_blog_", "userrrr", "bfhfhfhfhfhfhodyy","BBBBBB")
 
 
 
