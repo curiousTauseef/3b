@@ -1,7 +1,6 @@
 How to build and run:
-  python3 app.py
+`python3 app.py`
 
 How to test:
-  python3 test.py
-
-
+`python3 app.py < test.in > grader.test.out`
+`diff grader.test.out test.out`

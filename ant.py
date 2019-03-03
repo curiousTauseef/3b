@@ -110,10 +110,10 @@ def show(db, blogName):
                 for comment in blog["comments"]:
                     toVisit.append(["comment", comment["permalink"]])
 
-        else:
+        elif type == "comment":
             comment = db.Comments.find_one({"permalink": permalink})
             printCommentInfo(comment)
-            if ("comments" in comment):
+            if comment and ("comments" in comment):
                 for childComment in comment["comments"]:
                     toVisit.append(["comment", childComment["permalink"]])
 
@@ -128,7 +128,7 @@ def find(db, blogName, searchString):
         printBlogInfo(blog)
     elif searchString in blog["tags"]:
         printBlogInfo(blog)
-        
+
     if ("comments" in blog):
         for item in blog["comments"]:
             currComment = db.Comments.find_one({"permalink": item["permalink"]})
@@ -145,10 +145,9 @@ def printBlogInfo(blog):
     print("body: " + blog["postBody"])
 
 def printCommentInfo(comment):
+    if not comment:
+        return
     print("\t----------------------------")
     print("\tuser: " + comment["userName"])
     print("\tpermalink: " + comment["permalink"])
     print("\tcomment: " + comment["commentBody"])
-
-
-
