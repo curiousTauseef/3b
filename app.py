@@ -164,7 +164,20 @@ def app():
 
         # SHOW -----------------------------------------------------------------
         elif tokens[0] == "show":
-            print("showing!")
+            blogName = None
+
+            if len(tokens) != 2:
+                print("Usage: show blogName")
+                continue
+
+            # type checking
+            if isString(tokens[1]):
+                blogName = tokens[1]
+            else:
+                print("Error: blogName must be a string")
+                continue
+
+            show(db, blogName)
 
         else:
             print("Possible actions are 'post', 'comment', 'delete', and 'show'.")
