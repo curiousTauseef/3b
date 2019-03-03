@@ -1,5 +1,6 @@
 import re
 import pymongo
+from pprint import pprint
 
 def insertPost(db, blogName, userName, title, postBody, tags, timestamp):
     collection = db.Blogs
@@ -87,3 +88,41 @@ def delete(db, blogName, permalink, userName, timestamp):
     else:
         print("No post in DB with permalink: " + permalink)
 
+def show(db, blogName):
+    blog = db.Blogs.find_one({"blogName": blogName})
+    if not blog:
+        print("Error: no blog with name " + blogName)
+        return
+
+    printBlogInfo(blog)
+    print("\n")
+    toVisit = []
+
+    if ("comments" in blog):
+        for item in blog["comments"]:
+            toVisit.append(item["permalink"])
+
+    while toVisit:
+        currPermalink = toVisit.pop()
+        currComment = db.Comments.find_one({"permalink": currPermalink})
+        if currComment:
+            printCommentInfo(currComment)
+            print("\n")
+        if ("comments" in currComment):
+            for item in currComment["comments"]:
+                toVisit.append(item["permalink"])
+
+
+def printBlogInfo(blog):
+    print("----------------------------")
+    print("title: " + blog["title"])
+    print("user: " + blog["userName"])
+    print("tags: " + blog["tags"])
+    print("timestamp: " + blog["timestamp"])
+    print("permalink: " + blog["permalink"])
+
+def printCommentInfo(comment):
+    print("\t----------------------------")
+    print("\tuser: " + comment["userName"])
+    print("\tpermalink: " + comment["permalink"])
+    print("\tcomment: " + comment["commentBody"])
