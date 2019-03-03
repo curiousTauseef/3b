@@ -1,15 +1,15 @@
 import re
 import pymongo
 
-server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
-db = None
-try:
-    client = pymongo.MongoClient(server)
-    db = client.Team08DB
-
-except pymongo.errors.ServerSelectionTimeoutError as err:
-    print('failed!')
-    print(err)
+# server = "mongodb://Team08:3GfnR9a8WV4gR6lT@cluster0-shard-00-00-ppp7l.mongodb.net:27017,cluster0-shard-00-01-ppp7l.mongodb.net:27017,cluster0-shard-00-02-ppp7l.mongodb.net:27017/Team99DB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
+# db = None
+# try:
+#     client = pymongo.MongoClient(server)
+#     db = client.Team08DB
+#
+# except pymongo.errors.ServerSelectionTimeoutError as err:
+#     print('failed!')
+#     print(err)
 
 
 def insertPost(db, blogName, userName, title, postBody, tags, timestamp):
@@ -72,7 +72,7 @@ def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
     else:
         print("No post or comment exists with permalink: " + permalink)
 
-def delete(blogName, permalink, userName, timestamp):
+def delete(db, blogName, permalink, userName, timestamp):
     blogCollection = db.Blogs
     commentCollection = db.Comments
     blogPresent = blogCollection.find_one({"permalink": permalink})
@@ -103,7 +103,7 @@ def delete(blogName, permalink, userName, timestamp):
 #insertComment(db, "userrrr", "2018-10-02T11:01:28.425Z ", "ThNNGNGNGNG GNG GNG ","swegggrgrt", "timestamp")
 
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
-insertComment(db, "Time", "BBBBBB", "userrrr", "bfhfhfhfhfhfhodyy","BBBrgrgrgrgrgBBB")
+#insertComment(db, "Time", "BBBBBB", "userrrr", "bfhfhfhfhfhfhodyy","BBBrgrgrgrgrgBBB")
 
 
 

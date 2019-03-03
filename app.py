@@ -1,6 +1,6 @@
 import sys
 from connect import connect
-from ant import insertPost, insertComment
+from ant import insertPost, insertComment, delete
 
 def app():
     """
@@ -121,10 +121,44 @@ def app():
             insertComment(db, blogName, permalink, userName, commentBody, timestamp)
 
 
-
         # DELETE ---------------------------------------------------------------
         elif tokens[0] == "delete":
-            print("deleting!")
+            blogName = None
+            permalink = None
+            userName = None
+            timestamp = None
+
+            if len(tokens) != 5:
+                print("Usage: delete blogName permalink userName timestamp")
+                continue
+
+            # type checking
+            if isString(tokens[1]):
+                blogName = tokens[1]
+            else:
+                print("Error: blogName must be a string")
+                continue
+
+            if isString(tokens[2]):
+                permalink = tokens[2]
+            else:
+                print("Error: permalink must be a quoted string")
+                continue
+
+            if isString(tokens[3]):
+                userName = tokens[3]
+            else:
+                print("Error: userName must be a quoted string")
+                continue
+
+            if isString(tokens[4]):
+                timestamp = tokens[4]
+            else:
+                print("Error: timestamp must be a string")
+
+            delete(db, blogName, permalink, userName, timestamp)
+
+
 
         # SHOW -----------------------------------------------------------------
         elif tokens[0] == "show":
