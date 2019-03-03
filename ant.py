@@ -57,14 +57,17 @@ def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
             "permalink": permalink
               },{
             "$push": {
-                "comment" : {
-                    "commentBody" : commentBody,
-                    "userName" : userName,
-                    "timestamp": timestamp,
-                    "permalink": timestamp,
-                    "blogName": blogName,
-                    "parent" : permalink
+                "comments" : {
+                    "permalink" : timestamp,
                     }}})
+        commentCollection.insert_one({
+            "commentBody" : commentBody,
+            "userName" : userName,
+            "timestamp": timestamp,
+            "permalink": timestamp,
+            "blogName": blogName,
+            "parent": permalink
+        })
         print("Comment inserted with permalink: " + timestamp)
     else:
         print("No post or comment exists with permalink: " + permalink)
@@ -96,12 +99,11 @@ def delete(blogName, permalink, userName, timestamp):
         print("No post in DB with permalink: " + permalink)
 
 # def show(blogName)
-delete("NewBlog", "NewBlog._new_post_", "joe", "2018-10-03T05:41:11.842Z")
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
 #insertComment(db, "userrrr", "2018-10-02T11:01:28.425Z ", "ThNNGNGNGNG GNG GNG ","swegggrgrt", "timestamp")
 
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
-# insertComment("Time", "BensBlog._first_blog_", "userrrr", "bfhfhfhfhfhfhodyy","BBBBBB")
+insertComment(db, "Time", "BBBBBB", "userrrr", "bfhfhfhfhfhfhodyy","BBBrgrgrgrgrgBBB")
 
 
 
