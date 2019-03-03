@@ -87,3 +87,24 @@ def delete(db, blogName, permalink, userName, timestamp):
     else:
         print("No post in DB with permalink: " + permalink)
 
+
+def printBlogInfo(blog):
+    print("- - - - - - - - - -")
+    print("Title: " + blog["title"])
+    print("userName: " + blog["userName"])
+    print("tags: " + blog["tags"])
+    print("timestamp:" + blog["timestamp"])
+    print("permalink: " + blog["permalink"])
+
+def printComments(db, entity):
+
+
+
+def show(db, blogName):
+    print("In " + blogName + ':')
+    collection = db.Blogs
+    posts = collection.find({"blogName" : blogName})
+    for i in posts:
+        printBlogInfo(i)
+        printComments(db, i)
+
