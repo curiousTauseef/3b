@@ -62,7 +62,8 @@ def insertComment(db, blogName, permalink, userName, commentBody, timestamp):
                     "userName" : userName,
                     "timestamp": timestamp,
                     "permalink": timestamp,
-                    "blogName": blogName
+                    "blogName": blogName,
+                    "parent" : permalink
                     }}})
         print("Comment inserted with permalink: " + timestamp)
     else:
