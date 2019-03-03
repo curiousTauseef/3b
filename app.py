@@ -1,12 +1,13 @@
 import sys
 from connect import connect
-from ant import insertPost, insertComment, delete, show
+from ant import insertPost, insertComment, delete, show, find
 
 def app():
     """
     Main driver for CLI
     """
     db = connect()
+
 
     if db:
         print("Welcome to the blog engine CLI")
@@ -176,6 +177,16 @@ def app():
                 continue
 
             show(db, blogName)
+
+        elif tokens[0] == "find":
+            if len(tokens) != 3:
+                print("usage: find blogName searchString")
+                continue
+            if isString(tokens[1]) and isString(tokens[2]):
+                blogName = tokens[1]
+                searchString = tokens[2]
+
+            find(db, blogName, searchString)
 
         else:
             print("Possible actions are 'post', 'comment', 'delete', and 'show'.")

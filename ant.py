@@ -118,6 +118,22 @@ def show(db, blogName):
                     toVisit.append(["comment", childComment["permalink"]])
 
 
+def find(db, blogName, searchString):
+    blog = db.Blogs.find_one({"blogName": blogName})
+    if not blog:
+        print("Error: no blog with name " + blogName)
+        return
+    toVisit = []
+    if blog["postBody"].find(searchString) != -1:
+        printBlogInfo(blog)
+    elif searchString in blog["tags"]:
+        printBlogInfo(blog)
+        
+    if ("comments" in blog):
+        for item in blog["comments"]:
+            currComment = db.Comments.find_one({"permalink": item["permalink"]})
+            if currComment["commentBody"].find(searchString) != -1:
+                printCommentInfo(currComment)
 
 def printBlogInfo(blog):
     print("----------------------------")
@@ -126,9 +142,13 @@ def printBlogInfo(blog):
     print("tags: " + blog["tags"])
     print("timestamp: " + blog["timestamp"])
     print("permalink: " + blog["permalink"])
+    print("body: " + blog["postBody"])
 
 def printCommentInfo(comment):
     print("\t----------------------------")
     print("\tuser: " + comment["userName"])
     print("\tpermalink: " + comment["permalink"])
     print("\tcomment: " + comment["commentBody"])
+
+
+
