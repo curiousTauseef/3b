@@ -31,10 +31,12 @@ def insertPost(db, blogName, userName, title, postBody, tags):
         print("Document with permalink: " + permalink + " is already in DB.")
 
 def insertComment(blogName, permalink, userName, commentBody, timestamp):
-    collection = db.Blogs
-    present = collection.find_one({"permalink": permalink})
-    if  present:
-        collection.update_one({
+    blogCollection = db.Blogs
+    commentCollection = db.Comments
+    blogPresent = blogCollection.find_one({"permalink": permalink})
+    commentPresent = commentCollection.find_one({"permalink": permalink})
+    if blogPresent:
+        blogCollection.update_one({
             "permalink": permalink
               },{
             "$push": {
@@ -44,13 +46,35 @@ def insertComment(blogName, permalink, userName, commentBody, timestamp):
                     "timestamp": timestamp,
                     "permalink": timestamp
                     }}})
+        commentCollection.insert_one({
+            "commentBody" : commentBody,
+            "userName" : userName,
+            "timestamp": timestamp,
+            "permalink": timestamp,
+            "blogName": blogName
+        })
+        print("Comment inserted with permalink: " + timestamp)
+    elif commentPresent:
+        commentCollection.update_one({
+            "permalink": permalink
+              },{
+            "$push": {
+                "comment" : {
+                    "commentBody" : commentBody,
+                    "userName" : userName,
+                    "timestamp": timestamp,
+                    "permalink": timestamp,
+                    "blogName": blogName
+                    }}})
         print("Comment inserted with permalink: " + timestamp)
     else:
-        print("No post in DB with permalink: " + permalink)
+        print("No post or comment exist with permalink: " + timestamp)
+
+
         
 
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
-insertComment("Time", "BensBlog._first_blog_", "userrrr", "bfhfhfhfhfhfhodyy","BBBBBB")
+insertComment("Time", "BBrgrgrgrgrgr", "userrrr", "ThNNGNGNGNG GNG GNG ","swegggrgrt")
 
 
 
