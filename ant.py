@@ -68,13 +68,38 @@ def insertComment(blogName, permalink, userName, commentBody, timestamp):
                     }}})
         print("Comment inserted with permalink: " + timestamp)
     else:
-        print("No post or comment exist with permalink: " + timestamp)
+        print("No post or comment exists with permalink: " + timestamp)
 
-
-        
+def delete(blogName, permalink, userName, timestamp):
+    blogCollection = db.Blogs
+    commentCollection = db.Comments
+    blogPresent = blogCollection.find_one({"permalink": permalink})
+    commentPresent = commentCollection.find_one({"permalink": permalink})
+    if blogPresent:
+        blogCollection.find_one_and_replace({
+                "permalink" : permalink
+            },{
+                "body" : "Deleted by " + userName,
+                "timestamp" : timestamp,
+                "userName" : userName
+                })
+        print("Deleted post with permalink: " + permalink)
+    elif commentPresent:
+        commentCollection.find_one_and_replace({
+                "permalink" : permalink
+            },{
+                "body" : "Deleted by " + userName,
+                "timestamp" : timestamp,
+                "userName" : userName
+                })
+        print("Deleted comment with permalink: " + permalink)
+    else:
+        print("No post or comment exists with permalink: " + permalink)
 
 #insertPost("Time", "potatoMan", "TItleME", "Now this here is a body", [], "this is a time stamp")
-insertComment("Time", "BBrgrgrgrgrgr", "userrrr", "ThNNGNGNGNG GNG GNG ","swegggrgrt")
+#insertComment("Time", "BBrgrgrgrgrgr", "userrrr", "ThNNGNGNGNG GNG GNG ","swegggrgrt")
+
+delete("The price of fury", "BBrgrgrgrgrgr", "USERNAMEWHAT!", "Timetamp aho")
 
 
 
