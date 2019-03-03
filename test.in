@@ -1,0 +1,10 @@
+post TestBlog "Ben" "First Blog Post" "Here is the body for first blog post" "first, blog" 2019-02-02T11:01:28.425Z
+post TestBlog "Ben" "Second Blog Post" "Here is the body for second blog post" "first, blog" 2019-02-04T11:05:28.425Z
+post TestBlog "Ben" "Third Blog Post" "Here is the body for third blog post" "first, blog" 2019-02-06T11:07:28.425Z
+comment TestBlog TestBlog._First_Blog_Post_ "Joe" "Great first blog post!" 2019-02-03T12:01:33.425Z
+comment TestBlog TestBlog._Second_Blog_Post_ "Alex" "Great second blog post!" 2019-02-03T12:02:14.425Z
+comment TestBlog TestBlog._Third_Blog_Post_ "Shawn" "Great third blog post!" 2019-02-03T12:05:28.425Z
+comment TestBlog 2019-02-03T12:01:33.425Z "Ben" "Thanks Joe!" 2019-02-05T12:02:33.425Z
+comment TestBlog 2019-02-03T12:02:14.425Z "Ben" "Thanks Alex!" 2019-02-05T12:02:45.425Z
+comment TestBlog 2019-02-03T12:05:28.425Z "Ben" "Thanks Shawn!" 2019-02-05T12:03:10.425Z
+show TestBlog
