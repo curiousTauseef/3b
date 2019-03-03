@@ -1,12 +1,14 @@
 import sys
 from connect import connect
-from ant import insertPost, insertComment, delete
+from ant import insertPost, insertComment, delete, show
 
 def app():
     """
     Main driver for CLI
     """
     db = connect()
+
+    show(db , "myBlog")
 
     if db:
         print("Welcome to the blog engine CLI")
